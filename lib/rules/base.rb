@@ -2,8 +2,12 @@
 
 module Rules
   class Base
+    def initialize(applicable_for_codes)
+      @applicable_for_codes = applicable_for_codes
+    end
+
     def apply(_product, _count)
-      raise
+      raise NotImplementedError, 'Subclasses must implement this method'
     end
   end
 end
