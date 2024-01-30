@@ -1,5 +1,9 @@
 require "checkout"
 require "product"
+require 'rules/base'
+require 'rules/buy_one_get_one_free'
+require 'rules/fraction'
+require 'rules/quantity_discount'
 
 RSpec.describe Checkout do
   describe "#total" do
@@ -7,7 +11,15 @@ RSpec.describe Checkout do
     let(:strawberries) { Product.new(code: "SR1", name: "Strawberries", price: 5.00) }
     let(:coffee) { Product.new(code: "CF1", name: "Coffee", price: 11.23) }
 
-    subject { described_class.new }
+    let(:pricing_rules) do
+      [
+        Rules::BuyOneGetOneFree.new,
+        Rules::Fraction.new,
+        Rules::QuantityDiscount.new
+      ]
+    end
+
+    subject { described_class.new(pricing_rules) }
 
     context "when basket containts GR1, GR1 products" do
       it "calculates the basket value" do
