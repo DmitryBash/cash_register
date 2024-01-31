@@ -11,14 +11,24 @@ class Checkout
   end
 
   def total
-    total_price = 0
-    product_counts = Hash.new(0)
-
-    @basket.each { |product| product_counts[product] += 1 }
-    product_counts.each do |product, count|
-      total_price += @rules.sum { |rule| rule.apply(product, count) }
-    end
+    total_price = @basket.map(&:price).sum
+    total_price -= calculate_items_discount
 
     total_price.round(2)
+  end
+
+  private
+
+  def calculate_items_discount
+    return 0 if @rules.empty?
+
+    product_counts = @basket.each_with_object(Hash.new(0)) { |product, product_count| product_count[product] += 1 }
+    discount_price = 0
+
+    product_counts.each do |product, count|
+      discount_price += @rules.sum { |rule| rule.apply(product, count) }
+    end
+
+    discount_price
   end
 end
