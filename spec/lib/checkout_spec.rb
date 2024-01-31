@@ -13,9 +13,9 @@ RSpec.describe Checkout do
 
     let(:pricing_rules) do
       [
-        Rules::BuyOneGetOneFree.new([green_tea.code]),
-        Rules::Fraction.new([coffee.code]),
-        Rules::QuantityDiscount.new([strawberries.code])
+        Rules::BuyOneGetOneFree.new(applicable_for_codes: [green_tea.code]),
+        Rules::Fraction.new(applicable_for_codes: [coffee.code], min_quantity: 3),
+        Rules::QuantityDiscount.new(applicable_for_codes: [strawberries.code], new_price: 4.50, min_quantity: 3)
       ]
     end
 
