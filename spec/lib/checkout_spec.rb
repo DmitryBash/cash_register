@@ -1,19 +1,12 @@
 # frozen_string_literal: true
 
-require 'checkout'
-require 'product'
-require 'rules/base'
-require 'rules/buy_one_get_one_free'
-require 'rules/fraction'
-require 'rules/quantity_discount'
-
 RSpec.describe Checkout do
   describe '#total' do
     let(:green_tea) { Product.new(code: 'GR1', name: 'Green Tea', price: 3.11) }
     let(:strawberries) { Product.new(code: 'SR1', name: 'Strawberries', price: 5.00) }
     let(:coffee) { Product.new(code: 'CF1', name: 'Coffee', price: 11.23) }
 
-    let(:pricing_rules) do
+    let(:rules) do
       [
         Rules::BuyOneGetOneFree.new(applicable_for_codes: [green_tea.code]),
         Rules::Fraction.new(applicable_for_codes: [coffee.code], min_quantity: 3),
@@ -21,7 +14,7 @@ RSpec.describe Checkout do
       ]
     end
 
-    subject { described_class.new(pricing_rules) }
+    subject { described_class.new(rules) }
 
     context 'when basket containts GR1, GR1 products' do
       it 'calculates the basket value' do

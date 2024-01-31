@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'product'
+require_relative 'rules/base'
+require_relative 'rules/buy_one_get_one_free'
+require_relative 'rules/fraction'
+require_relative 'rules/quantity_discount'
+
 class Checkout
   def initialize(rules)
     @basket = []
