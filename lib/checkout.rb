@@ -22,10 +22,9 @@ class Checkout
   def calculate_items_discount
     return 0 if @rules.empty?
 
-    product_counts = @basket.each_with_object(Hash.new(0)) { |product, product_count| product_count[product] += 1 }
     discount_price = 0
 
-    product_counts.each do |product, count|
+    @basket.tally.each do |product, count|
       discount_price += @rules.sum { |rule| rule.apply(product, count) }
     end
 
